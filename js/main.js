@@ -14,6 +14,16 @@
     } catch (e) { return null; }
   }
 
+  /* ---------- Всегда открываем страницу с самого верха ----------
+     Мобильные браузеры восстанавливают прошлую прокрутку, и главная
+     открывалась сразу на нижнем блоке с контактами. Якоря (#mains и т.п.) не трогаем. */
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (!location.hash) {
+    window.scrollTo(0, 0);
+    window.addEventListener("load", function () { window.scrollTo(0, 0); });
+    window.addEventListener("pageshow", function (e) { if (e.persisted) window.scrollTo(0, 0); });
+  }
+
   /* ---------- Иконки Lucide ---------- */
   function icons() { if (window.lucide && lucide.createIcons) lucide.createIcons({ attrs: { "stroke-width": 1.5 } }); }
   icons();
